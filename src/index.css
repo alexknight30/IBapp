@@ -10,73 +10,142 @@
   --gold: #D4AF37;
   --gold-light: #F4E4BA;
   --gold-dark: #B8960C;
+  --nav-height: 80px;
 }
 
-html, body {
+html {
+  height: 100%;
+  /* Prevent overscroll bounce on iOS */
+  overflow: hidden;
+}
+
+body {
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #f8f9fa;
+  background: #f5f5f5;
   color: #171717;
+  overflow: hidden;
+  /* Mobile viewport fix */
+  height: 100dvh;
 }
 
 #root {
   height: 100%;
-}
-
-.app {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
-  position: relative;
   overflow: hidden;
 }
 
-/* Main Content */
+/* App Container - Mobile First */
+.app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  /* Center on larger screens */
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Main Content Area */
 .main-content {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 100px;
+  padding-bottom: var(--nav-height);
+  /* Smooth scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Scrollbar styling */
+/* Hide scrollbar but keep functionality */
 .main-content::-webkit-scrollbar {
-  width: 4px;
+  display: none;
 }
 
-.main-content::-webkit-scrollbar-track {
-  background: transparent;
+.main-content {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.main-content::-webkit-scrollbar-thumb {
-  background: #d4d4d4;
-  border-radius: 2px;
+/* Bottom Navigation - Fixed */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 16px;
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+  background: #ffffff;
+  border-top: 1px solid #f0f0f0;
+  z-index: 100;
 }
 
-/* Level Map Styles */
-.level-map {
-  padding: 24px 20px;
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #a3a3a3;
+  padding: 8px 24px;
+  border-radius: 12px;
+  transition: color 0.2s ease;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-item span {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.nav-item.active {
+  color: #171717;
+}
+
+/* Page Container */
+.page {
   min-height: 100%;
+  padding: 16px 20px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* Level Map */
+.level-map {
+  padding: 16px 20px;
 }
 
 .map-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
+  padding-top: 8px;
 }
 
 .levels-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
+  gap: 28px;
   position: relative;
-  padding: 20px 0 60px;
+  padding: 16px 0 40px;
 }
 
 /* Path SVG */
@@ -85,7 +154,7 @@ html, body {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 200px;
+  width: 180px;
   height: 100%;
   z-index: 0;
   pointer-events: none;
@@ -97,56 +166,56 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
-/* Level Circle Base */
+/* Level Circle */
 .level-circle {
   position: relative;
-  width: 88px;
-  height: 88px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Locked Level */
 .level-circle.locked {
-  background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
+  background: linear-gradient(145deg, #f5f5f5, #e8e8e8);
   box-shadow: 
-    0 8px 16px rgba(0, 0, 0, 0.08),
-    0 2px 4px rgba(0, 0, 0, 0.04),
-    inset 0 -4px 8px rgba(0, 0, 0, 0.05),
-    inset 0 4px 8px rgba(255, 255, 255, 0.8);
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.04),
+    inset 0 2px 4px rgba(255, 255, 255, 0.8);
 }
 
 .level-circle.locked .level-inner {
   background: linear-gradient(145deg, #fafafa, #f0f0f0);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 /* Active Level (Gold) */
 .level-circle.active {
-  background: linear-gradient(145deg, #D4AF37, #C4A030);
+  background: linear-gradient(145deg, #D4AF37, #C9A432);
   box-shadow: 
-    0 8px 32px rgba(212, 175, 55, 0.5),
-    0 4px 12px rgba(212, 175, 55, 0.3),
-    inset 0 -4px 8px rgba(0, 0, 0, 0.15),
-    inset 0 4px 8px rgba(255, 255, 255, 0.25);
+    0 6px 24px rgba(212, 175, 55, 0.45),
+    0 2px 8px rgba(212, 175, 55, 0.25),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.12),
+    inset 0 2px 6px rgba(255, 255, 255, 0.2);
 }
 
 .level-circle.active .level-inner {
-  background: linear-gradient(145deg, #F4E4BA, #E8D4A0);
+  background: linear-gradient(145deg, #F4E4BA, #EBD9A8);
   box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.08),
-    inset 0 -2px 4px rgba(255, 255, 255, 0.6);
+    inset 0 1px 3px rgba(0, 0, 0, 0.06),
+    inset 0 -1px 3px rgba(255, 255, 255, 0.5);
 }
 
 .level-inner {
-  width: 68px;
-  height: 68px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -156,89 +225,29 @@ html, body {
 /* Start Button */
 .start-button {
   position: absolute;
-  bottom: -16px;
+  bottom: -14px;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(180deg, #1a1a1a, #000000);
+  background: #171717;
   color: #ffffff;
   border: none;
-  padding: 8px 24px;
-  border-radius: 24px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  cursor: pointer;
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.3),
-    0 2px 4px rgba(0, 0, 0, 0.2);
-  white-space: nowrap;
-  transition: all 0.2s ease;
-}
-
-.start-button:hover {
-  box-shadow: 
-    0 6px 16px rgba(0, 0, 0, 0.4),
-    0 2px 6px rgba(0, 0, 0, 0.25);
-}
-
-/* Bottom Navigation */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 480px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 12px 24px 28px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  z-index: 100;
-}
-
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #a3a3a3;
   padding: 8px 20px;
-  border-radius: 16px;
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-.nav-item span {
+  border-radius: 20px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.nav-item.active {
-  color: #171717;
-}
-
-/* Page Styles */
-.page {
-  min-height: 100%;
-  padding: 24px 20px;
-}
-
-.page-header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
+/* Placeholder Content */
 .placeholder-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 300px;
+  height: 200px;
   color: #a3a3a3;
-  font-size: 16px;
+  font-size: 15px;
 }

@@ -18,46 +18,36 @@ const levels: Level[] = [
   { id: 5, title: "Advanced", subtitle: "Expert strategies", isUnlocked: false, isActive: false },
 ];
 
-// Zigzag positions
-const positions = [0, 50, -50, 50, -50];
+// Zigzag positions (pixels from center)
+const xOffsets = [0, 40, -40, 40, -40];
 
-// Animation variants
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.2,
+      staggerChildren: 0.1,
+      delayChildren: 0.15,
     },
   },
 };
 
 const nodeVariants: Variants = {
-  hidden: { 
-    opacity: 0, 
-    y: 30,
-    scale: 0.8,
-  },
+  hidden: { opacity: 0, y: 20, scale: 0.9 },
   visible: { 
     opacity: 1, 
-    y: 0,
+    y: 0, 
     scale: 1,
-    transition: {
-      type: "spring" as const,
-      stiffness: 200,
-      damping: 20,
-    },
+    transition: { type: "spring", stiffness: 300, damping: 24 },
   },
 };
 
 function handleStartClick() {
-  // Fire confetti
   confetti({
-    particleCount: 80,
-    spread: 60,
-    origin: { y: 0.7 },
-    colors: ["#D4AF37", "#F4E4BA", "#B8960C", "#FFD700"],
+    particleCount: 60,
+    spread: 55,
+    origin: { y: 0.6 },
+    colors: ["#D4AF37", "#F4E4BA", "#B8960C"],
   });
 }
 
@@ -66,14 +56,14 @@ export function LevelMap() {
     <div className="level-map">
       <motion.header 
         className="map-header"
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.4 }}
       >
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <h1 className="text-xl font-bold text-gray-900 mb-1">
           Financial Foundations
         </h1>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-400">
           Master the basics of personal finance
         </p>
       </motion.header>
@@ -85,33 +75,33 @@ export function LevelMap() {
         animate="visible"
       >
         {/* SVG Path */}
-        <svg className="path-svg" viewBox="0 0 200 800" preserveAspectRatio="none">
+        <svg className="path-svg" viewBox="0 0 180 680" preserveAspectRatio="none">
           <defs>
             <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#D4AF37" />
-              <stop offset="15%" stopColor="#D4AF37" />
-              <stop offset="15%" stopColor="#e5e5e5" />
-              <stop offset="100%" stopColor="#e5e5e5" />
+              <stop offset="12%" stopColor="#D4AF37" />
+              <stop offset="12%" stopColor="#e0e0e0" />
+              <stop offset="100%" stopColor="#e0e0e0" />
             </linearGradient>
           </defs>
           <motion.path
-            d="M 100 40 
-               Q 100 90, 150 120
-               Q 200 150, 150 200
-               Q 100 250, 50 280
-               Q 0 310, 50 360
-               Q 100 410, 150 440
-               Q 200 470, 150 520
-               Q 100 570, 50 600
-               Q 0 630, 50 680
-               Q 100 730, 100 760"
+            d="M 90 35 
+               Q 90 75, 130 95
+               Q 170 115, 130 155
+               Q 90 195, 50 215
+               Q 10 235, 50 275
+               Q 90 315, 130 335
+               Q 170 355, 130 395
+               Q 90 435, 50 455
+               Q 10 475, 50 515
+               Q 90 555, 90 595"
             fill="none"
             stroke="url(#pathGradient)"
-            strokeWidth="6"
+            strokeWidth="5"
             strokeLinecap="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
           />
         </svg>
 
@@ -120,61 +110,44 @@ export function LevelMap() {
             key={level.id}
             className="level-node"
             variants={nodeVariants}
-            style={{ transform: `translateX(${positions[index]}px)` }}
+            style={{ transform: `translateX(${xOffsets[index]}px)` }}
           >
             <motion.div
               className={`level-circle ${level.isActive ? "active" : "locked"}`}
-              whileHover={level.isUnlocked ? { scale: 1.08 } : {}}
-              whileTap={level.isUnlocked ? { scale: 0.95 } : {}}
+              whileTap={level.isUnlocked ? { scale: 0.95 } : undefined}
               animate={level.isActive ? {
                 boxShadow: [
-                  "0 0 20px rgba(212, 175, 55, 0.4)",
-                  "0 0 40px rgba(212, 175, 55, 0.7)",
-                  "0 0 20px rgba(212, 175, 55, 0.4)",
+                  "0 6px 24px rgba(212, 175, 55, 0.45)",
+                  "0 6px 32px rgba(212, 175, 55, 0.65)",
+                  "0 6px 24px rgba(212, 175, 55, 0.45)",
                 ],
-              } : {}}
+              } : undefined}
               transition={level.isActive ? {
                 duration: 2,
                 repeat: Infinity,
                 ease: "easeInOut",
-              } : {}}
+              } : undefined}
             >
-              <motion.div 
-                className="level-inner"
-                animate={level.isActive ? {
-                  scale: [1, 1.05, 1],
-                } : {}}
-                transition={level.isActive ? {
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                } : {}}
-              >
+              <div className="level-inner">
                 {level.isUnlocked ? (
-                  <motion.span 
-                    className={`text-2xl font-bold ${level.isActive ? "text-amber-700" : "text-gray-400"}`}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.3 + index * 0.1, type: "spring" }}
-                  >
+                  <span className={`text-xl font-bold ${level.isActive ? "text-amber-700" : "text-gray-400"}`}>
                     {level.id}
-                  </motion.span>
+                  </span>
                 ) : (
-                  <Lock className="w-6 h-6 text-gray-400" />
+                  <Lock className="w-5 h-5 text-gray-400" />
                 )}
-              </motion.div>
+              </div>
 
               {level.isActive && (
                 <motion.button
                   className="start-button"
                   onClick={handleStartClick}
-                  whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
+                  transition={{ delay: 0.4 }}
                 >
-                  <span className="flex items-center gap-1">
+                  <span className="flex items-center gap-1.5">
                     <Sparkles className="w-3 h-3" />
                     START
                   </span>
@@ -182,19 +155,14 @@ export function LevelMap() {
               )}
             </motion.div>
 
-            <motion.div 
-              className="text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 + index * 0.1 }}
-            >
+            <div className="text-center">
               <p className={`text-sm font-semibold ${level.isActive ? "text-amber-700" : "text-gray-500"}`}>
                 {level.title}
               </p>
-              <p className="text-xs text-gray-400 mt-0.5">
+              <p className="text-xs text-gray-400">
                 {level.subtitle}
               </p>
-            </motion.div>
+            </div>
           </motion.div>
         ))}
       </motion.div>

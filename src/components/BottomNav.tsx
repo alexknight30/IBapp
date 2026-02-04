@@ -14,12 +14,7 @@ const tabs = [
 
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
-    <motion.nav 
-      className="bottom-nav"
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-    >
+    <nav className="bottom-nav">
       {tabs.map((tab) => {
         const Icon = tab.icon;
         const isActive = activeTab === tab.id;
@@ -29,41 +24,28 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
             key={tab.id}
             className={`nav-item ${isActive ? "active" : ""}`}
             onClick={() => onTabChange(tab.id)}
-            whileTap={{ scale: 0.9 }}
-            aria-label={tab.label}
+            whileTap={{ scale: 0.92 }}
           >
             <motion.div
-              initial={false}
-              animate={isActive ? { scale: 1.1, y: -2 } : { scale: 1, y: 0 }}
+              animate={{ 
+                scale: isActive ? 1.1 : 1,
+                y: isActive ? -2 : 0,
+              }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
-              <Icon 
-                size={24} 
-                strokeWidth={isActive ? 2.5 : 2}
-              />
+              <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
             </motion.div>
-            <motion.span
-              initial={false}
-              animate={{ 
-                opacity: isActive ? 1 : 0.7,
-                fontWeight: isActive ? 600 : 500,
-              }}
-            >
-              {tab.label}
-            </motion.span>
-            
+            <span>{tab.label}</span>
             {isActive && (
               <motion.div
-                className="absolute -top-1 left-1/2 w-1 h-1 bg-black rounded-full"
-                layoutId="activeIndicator"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
+                className="absolute -top-0.5 w-1 h-1 bg-black rounded-full"
+                layoutId="navDot"
                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
               />
             )}
           </motion.button>
         );
       })}
-    </motion.nav>
+    </nav>
   );
 }
