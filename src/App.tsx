@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { BottomNav } from "./components/BottomNav";
 import { HomePage } from "./pages/HomePage";
 import { LibraryPage } from "./pages/LibraryPage";
@@ -12,9 +13,11 @@ export default function App() {
   return (
     <div className="app">
       <main className="main-content">
-        {activeTab === "home" && <HomePage />}
-        {activeTab === "library" && <LibraryPage />}
-        {activeTab === "profile" && <ProfilePage />}
+        <AnimatePresence mode="wait">
+          {activeTab === "home" && <HomePage key="home" />}
+          {activeTab === "library" && <LibraryPage key="library" />}
+          {activeTab === "profile" && <ProfilePage key="profile" />}
+        </AnimatePresence>
       </main>
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
     </div>

@@ -1,74 +1,69 @@
+import { motion } from "framer-motion";
+import { Map, BookOpen, User } from "lucide-react";
+
 interface BottomNavProps {
   activeTab: "home" | "library" | "profile";
   onTabChange: (tab: "home" | "library" | "profile") => void;
 }
 
+const tabs = [
+  { id: "home" as const, label: "Map", icon: Map },
+  { id: "library" as const, label: "Library", icon: BookOpen },
+  { id: "profile" as const, label: "Profile", icon: User },
+];
+
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
-    <nav className="bottom-nav">
-      <button
-        className={`nav-item ${activeTab === "home" ? "active" : ""}`}
-        onClick={() => onTabChange("home")}
-        aria-label="Home"
-      >
-        <svg
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" />
-          <line x1="9" y1="3" x2="9" y2="18" />
-          <line x1="15" y1="6" x2="15" y2="21" />
-        </svg>
-        <span>Map</span>
-      </button>
-
-      <button
-        className={`nav-item ${activeTab === "library" ? "active" : ""}`}
-        onClick={() => onTabChange("library")}
-        aria-label="Library"
-      >
-        <svg
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-        </svg>
-        <span>Library</span>
-      </button>
-
-      <button
-        className={`nav-item ${activeTab === "profile" ? "active" : ""}`}
-        onClick={() => onTabChange("profile")}
-        aria-label="Profile"
-      >
-        <svg
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
-        </svg>
-        <span>Profile</span>
-      </button>
-    </nav>
+    <motion.nav 
+      className="bottom-nav"
+      initial={{ y: 100 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+    >
+      {tabs.map((tab) => {
+        const Icon = tab.icon;
+        const isActive = activeTab === tab.id;
+        
+        return (
+          <motion.button
+            key={tab.id}
+            className={`nav-item ${isActive ? "active" : ""}`}
+            onClick={() => onTabChange(tab.id)}
+            whileTap={{ scale: 0.9 }}
+            aria-label={tab.label}
+          >
+            <motion.div
+              initial={false}
+              animate={isActive ? { scale: 1.1, y: -2 } : { scale: 1, y: 0 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            >
+              <Icon 
+                size={24} 
+                strokeWidth={isActive ? 2.5 : 2}
+              />
+            </motion.div>
+            <motion.span
+              initial={false}
+              animate={{ 
+                opacity: isActive ? 1 : 0.7,
+                fontWeight: isActive ? 600 : 500,
+              }}
+            >
+              {tab.label}
+            </motion.span>
+            
+            {isActive && (
+              <motion.div
+                className="absolute -top-1 left-1/2 w-1 h-1 bg-black rounded-full"
+                layoutId="activeIndicator"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+              />
+            )}
+          </motion.button>
+        );
+      })}
+    </motion.nav>
   );
 }
