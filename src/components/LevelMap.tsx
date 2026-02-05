@@ -11,15 +11,15 @@ interface Level {
 }
 
 const levels: Level[] = [
-  { id: 1, title: "Basics", subtitle: "Financial fundamentals", isUnlocked: true, isActive: true },
-  { id: 2, title: "Budgeting", subtitle: "Master your money", isUnlocked: false, isActive: false },
-  { id: 3, title: "Investing", subtitle: "Grow your wealth", isUnlocked: false, isActive: false },
-  { id: 4, title: "Credit", subtitle: "Build your score", isUnlocked: false, isActive: false },
   { id: 5, title: "Advanced", subtitle: "Expert strategies", isUnlocked: false, isActive: false },
+  { id: 4, title: "Credit", subtitle: "Build your score", isUnlocked: false, isActive: false },
+  { id: 3, title: "Investing", subtitle: "Grow your wealth", isUnlocked: false, isActive: false },
+  { id: 2, title: "Budgeting", subtitle: "Master your money", isUnlocked: false, isActive: false },
+  { id: 1, title: "Basics", subtitle: "Financial fundamentals", isUnlocked: true, isActive: true },
 ];
 
 // Zigzag positions (pixels from center)
-const xOffsets = [0, 40, -40, 40, -40];
+const xOffsets = [0, -40, 40, -40, 40];
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -74,10 +74,10 @@ export function LevelMap() {
         initial="hidden"
         animate="visible"
       >
-        {/* SVG Path */}
+        {/* SVG Path - now goes from bottom to top */}
         <svg className="path-svg" viewBox="0 0 180 680" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <linearGradient id="pathGradient" x1="0%" y1="100%" x2="0%" y2="0%">
               <stop offset="0%" stopColor="#D4AF37" />
               <stop offset="12%" stopColor="#D4AF37" />
               <stop offset="12%" stopColor="#e0e0e0" />
@@ -85,16 +85,16 @@ export function LevelMap() {
             </linearGradient>
           </defs>
           <motion.path
-            d="M 90 35 
-               Q 90 75, 130 95
-               Q 170 115, 130 155
-               Q 90 195, 50 215
-               Q 10 235, 50 275
-               Q 90 315, 130 335
-               Q 170 355, 130 395
-               Q 90 435, 50 455
-               Q 10 475, 50 515
-               Q 90 555, 90 595"
+            d="M 90 645 
+               Q 90 605, 50 585
+               Q 10 565, 50 525
+               Q 90 485, 130 465
+               Q 170 445, 130 405
+               Q 90 365, 50 345
+               Q 10 325, 50 285
+               Q 90 245, 130 225
+               Q 170 205, 130 165
+               Q 90 125, 90 85"
             fill="none"
             stroke="url(#pathGradient)"
             strokeWidth="5"
