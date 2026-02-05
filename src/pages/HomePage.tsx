@@ -9,6 +9,7 @@ export function HomePage() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
+      style={{ height: '100%' }}
     >
       <LevelMap />
     </motion.div>

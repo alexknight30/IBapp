@@ -11,6 +11,7 @@
   --gold-light: #F4E4BA;
   --gold-dark: #B8960C;
   --nav-height: 80px;
+  --header-height: 80px;
 }
 
 html {
@@ -55,21 +56,10 @@ body {
 /* Main Content Area */
 .main-content {
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   padding-bottom: var(--nav-height);
-  /* Smooth scrolling on iOS */
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Hide scrollbar but keep functionality */
-.main-content::-webkit-scrollbar {
-  display: none;
-}
-
-.main-content {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Bottom Navigation - Fixed */
@@ -119,8 +109,10 @@ body {
 
 /* Page Container */
 .page {
-  min-height: 100%;
-  padding: 16px 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .page-header {
@@ -130,20 +122,44 @@ body {
 
 /* Level Map */
 .level-map {
-  padding: 16px 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .map-header {
+  flex-shrink: 0;
   text-align: center;
-  margin-bottom: 32px;
-  padding-top: 8px;
+  padding: 16px 20px 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.map-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 20px;
+  /* Smooth scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar but keep functionality */
+.map-scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+.map-scroll-area {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .levels-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 28px;
+  gap: 20px;
   position: relative;
   padding: 16px 0 40px;
 }
@@ -154,7 +170,7 @@ body {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 180px;
+  width: 220px;
   height: 100%;
   z-index: 0;
   pointer-events: none;
@@ -222,24 +238,57 @@ body {
   justify-content: center;
 }
 
-/* Start Button */
+/* Level Card - shown on click */
+.level-card {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 12px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  min-width: 140px;
+}
+
+.level-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #171717;
+}
+
+.level-card-subtitle {
+  font-size: 12px;
+  color: #737373;
+  margin-bottom: 4px;
+}
+
+/* Start Button - minimalist black/white theme */
 .start-button {
-  position: absolute;
-  bottom: -14px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #171717;
-  color: #ffffff;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  margin-top: 8px;
+  background: #ffffff;
+  color: #171717;
+  border: 1.5px solid #171717;
+  padding: 8px 24px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.start-button:hover {
+  background: #171717;
+  color: #ffffff;
+}
+
+.start-button:active {
+  background: #171717;
+  color: #ffffff;
 }
 
 /* Placeholder Content */
